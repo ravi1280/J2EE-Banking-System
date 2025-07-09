@@ -26,11 +26,47 @@
             <version>1.0</version>
             <type>war</type>
         </dependency>
+
         <dependency>
             <groupId>lk.jiat.ee</groupId>
             <artifactId>banking-core</artifactId>
             <version>1.0</version>
             <type>jar</type>
+        </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-account</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-customer</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-report</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-security</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-transaction</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
         </dependency>
     </dependencies>
 
@@ -44,6 +80,31 @@
                 <configuration>
                     <defaultLibBundleDir>lib</defaultLibBundleDir>
                     <modules>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-account</artifactId>
+                            <bundleFileName>account-module.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-customer</artifactId>
+                            <bundleFileName>customer-module.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-report</artifactId>
+                            <bundleFileName>report-module.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-security</artifactId>
+                            <bundleFileName>security-module.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-transaction</artifactId>
+                            <bundleFileName>transaction-module.jar</bundleFileName>
+                        </ejbModule>
                         <webModule>
                             <groupId>lk.jiat.ee</groupId>
                             <artifactId>banking-web</artifactId>

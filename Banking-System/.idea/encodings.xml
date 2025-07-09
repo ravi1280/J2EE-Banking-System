@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/banking-account/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-account/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-core/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-core/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-customer/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-customer/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-ear/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-ear/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-report/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-report/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-security/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-security/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-transaction/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/banking-transaction/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-web/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/banking-web/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
