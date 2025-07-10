@@ -9,6 +9,13 @@ import java.util.List;
 
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Customer.FindByEmail", query = "select c from Customer c where c.email=:email"),
+        @NamedQuery(name = "Customer.FindByID", query = "select c from Customer c where c.id=:id"),
+        @NamedQuery(name = "Customer.FindAll" ,query = "select c from Customer c"),
+        @NamedQuery(name = "Customer.FindByEmailAndPassword", query = "select c from Customer c where c.email=:email and c.password=:password"),
+})
+@Cacheable(value = false)
 public class Customer implements Serializable {
 
     public Long getId() {
@@ -82,6 +89,14 @@ public class Customer implements Serializable {
         this.password = password;
     }
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -91,19 +106,19 @@ public class Customer implements Serializable {
     @Column(unique = true)
     private String email;
 
-
-
     private String password;
 
     private String phone;
 
     private String address;
 
+    private String verificationCode;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Account> accounts;
 
     @Enumerated(EnumType.STRING)
-    private UserType userType = UserType.USER;
+    private UserType userType = UserType.CUSTOMER;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.INACTIVE;

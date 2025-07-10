@@ -10,6 +10,62 @@ import java.util.List;
 @Entity
 @Table(name = "accounts")
 public class Account implements Serializable {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,10 +89,11 @@ public class Account implements Serializable {
     // Constructors
     public Account() {}
 
-    public Account(String accountNumber, AccountType accountType, double balance, double interestRate) {
+    public Account(String accountNumber, String accountType, double balance, double interestRate,Customer customer) {
         this.accountNumber = accountNumber;
-        this.accountType = accountType;
+        this.accountType = AccountType.valueOf(accountType);
         this.balance = balance;
         this.interestRate = interestRate;
+        this.customer = customer;
     }
 }
