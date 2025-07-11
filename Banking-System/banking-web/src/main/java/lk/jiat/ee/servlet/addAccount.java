@@ -19,7 +19,6 @@ public class addAccount extends HttpServlet {
     @EJB
     private CustomerService customerService;
 
-
     @EJB
     private AccountService accountService;
 
@@ -38,7 +37,7 @@ public class addAccount extends HttpServlet {
 
         accountService.saveAccount(account);
 
-        response.sendRedirect(request.getContextPath() + "/admin/addCustomer.jsp");
+        response.sendRedirect(request.getContextPath() + "/admin/index.jsp");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
