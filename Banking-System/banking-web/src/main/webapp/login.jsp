@@ -1,36 +1,67 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ravis
-  Date: 7/9/2025
-  Time: 6:01 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Customer | Login</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #007bff, #00c6ff);
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-box {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-title {
+            color: #007bff;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .btn-blue {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-blue:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>Login</h1>
-<hr/>
 
-<form method="POST" action="${pageContext.request.contextPath}/login" >
-    <table>
+<div class="login-box">
+    <h2 class="text-center login-title">Customer Login</h2>
+    <form method="POST" action="${pageContext.request.contextPath}/login">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" id="email" required />
+        </div>
 
-        <tr>
-            <th>Email</th>
-            <td><input type="email" name="email" /></td>
-        </tr>
+        <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" required />
+        </div>
 
-        <tr>
-            <th>Password</th>
-            <td><input type="password" name="password" /></td>
-        </tr>
-        <tr>
-            <td><input type="submit" name="login" /></td>
-        </tr>
-    </table>
-</form>
+        <button type="submit" class="btn btn-blue w-100">Login</button>
+    </form>
+</div>
 
 </body>
 </html>

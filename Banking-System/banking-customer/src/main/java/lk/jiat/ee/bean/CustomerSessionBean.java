@@ -62,11 +62,12 @@ public class CustomerSessionBean implements CustomerService {
 
     @Override
     public void updateCustomer(Customer customer) {
-
+        em.merge(customer);
     }
 
     @Override
     public void deleteCustomer(String username, String password) {
+        em.remove(getCustomerByEmail(username));
 
     }
 }
