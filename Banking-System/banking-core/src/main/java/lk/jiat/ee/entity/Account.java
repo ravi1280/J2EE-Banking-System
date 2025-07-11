@@ -8,6 +8,11 @@ import java.util.List;
 
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Account.FindByID", query = "select a from Account a where a.id=:id"),
+        @NamedQuery(name = "Account.FindAll" ,query = "select a from Account a"),
+        @NamedQuery(name = "Account.FindByAccountNo", query = "SELECT a FROM Account a WHERE a.accountNumber=:accountNumber")
+})
 @Table(name = "accounts")
 public class Account implements Serializable {
     public Long getId() {
