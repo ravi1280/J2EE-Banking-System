@@ -68,6 +68,15 @@
             <version>1.0</version>
             <type>ejb</type>
         </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-timers</artifactId>
+            <version>1.0</version>
+            <type>ejb</type>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -84,6 +93,11 @@
                             <groupId>lk.jiat.ee</groupId>
                             <artifactId>banking-account</artifactId>
                             <bundleFileName>account-module.jar</bundleFileName>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>lk.jiat.ee</groupId>
+                            <artifactId>banking-timers</artifactId>
+                            <bundleFileName>timers-module.jar</bundleFileName>
                         </ejbModule>
                         <ejbModule>
                             <groupId>lk.jiat.ee</groupId>

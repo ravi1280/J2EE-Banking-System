@@ -17,6 +17,7 @@
         <module>banking-customer</module>
         <module>banking-security</module>
         <module>banking-report</module>
+        <module>banking-timers</module>
     </modules>
 
     <properties>
