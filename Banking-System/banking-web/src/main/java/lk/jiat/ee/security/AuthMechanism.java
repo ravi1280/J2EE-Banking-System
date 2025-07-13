@@ -53,12 +53,22 @@ public class AuthMechanism implements HttpAuthenticationMechanism {
             }
         }
 
-        if(context.isProtected() && context.getCallerPrincipal() != null){
+        if (context.isProtected() && context.getCallerPrincipal() == null) {
+            String requestURI = request.getRequestURI();
+
             try {
-                response.sendRedirect(request.getContextPath()+"/login.jsp");
+
+                if (requestURI.contains("/admin/")) {
+                    response.sendRedirect(request.getContextPath() + "/adminLogin.jsp");
+                } else if (requestURI.contains("/customer/")) {
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
+                } else {
+                    response.sendRedirect(request.getContextPath() + "/index.jsp");
+                }
+
                 return AuthenticationStatus.SEND_CONTINUE;
             } catch (IOException e) {
-                throw new RuntimeException("Redirect to login ", e);
+                throw new RuntimeException("Redirect failed", e);
             }
         }
 

@@ -37,6 +37,16 @@
             <artifactId>banking-core</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>lk.jiat.ee</groupId>
+            <artifactId>banking-timers</artifactId>
+            <version>1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+
     </dependencies>
     <build>
         <finalName>${project.name}</finalName>

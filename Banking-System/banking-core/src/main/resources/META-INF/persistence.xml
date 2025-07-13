@@ -8,6 +8,8 @@
         <class>lk.jiat.ee.entity.Account</class>
         <class>lk.jiat.ee.entity.Transaction</class>
         <class>lk.jiat.ee.entity.Admin</class>
+        <class>lk.jiat.ee.entity.ScheduledTransfer</class>
+
 
 
         <properties>
