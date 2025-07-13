@@ -3,6 +3,7 @@
 <%@ page import="lk.jiat.ee.entity.Account" %>
 <%@ page import="javax.naming.NamingException" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lk.jiat.ee.bean.ReportServiceBean" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -15,6 +16,7 @@
     try {
         InitialContext initialContext = new InitialContext();
         AccountService accountService = (AccountService) initialContext.lookup("lk.jiat.ee.service.AccountService");
+        ReportServiceBean reportService = (ReportServiceBean) initialContext.lookup("java:global/Banking-System-Ear/timers-module/ReportServiceBean");
         accounts = accountService.getAllAccounts();
         for (Account acc : accounts) {
             totalBalance += acc.getBalance();
@@ -24,9 +26,25 @@
         pageContext.setAttribute("totalBalance", totalBalance);
         pageContext.setAttribute("totalAccounts", accounts.size());
         pageContext.setAttribute("avgInterestRate", accounts.size() > 0 ? totalInterest / accounts.size() : 0);
+
+        pageContext.setAttribute("S_period", reportService.getPeriod());
+        pageContext.setAttribute("S_totalTransactions", reportService.getTotalTransactions());
+        pageContext.setAttribute("S_totalTransactionAmount", reportService.getTotalTransactionAmount());
+        pageContext.setAttribute("S_depositCount", reportService.getDepositCount());
+        pageContext.setAttribute("S_withdrawalCount", reportService.getWithdrawalCount());
+        pageContext.setAttribute("S_uniqueCustomers", reportService.getUniqueCustomers());
+        pageContext.setAttribute("S_reportAccounts", reportService.getTotalAccounts());
+        pageContext.setAttribute("S_highestTransaction", reportService.getHighestTransaction());
+
+        System.out.println(reportService.getPeriod());
+
     } catch (NamingException e) {
         throw new RuntimeException(e);
     }
+
+
+
+
 %>
 
 <!DOCTYPE html>
@@ -127,6 +145,98 @@
                     </c:forEach>
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly System Report -->
+    <div class="mt-5 mb-5">
+        <div class="bg-white p-4 rounded card shadow">
+            <h4 class="mb-4 text-primary d-flex align-items-center">
+                <i class="fas fa-chart-pie me-2"></i> Monthly System Report – <span class="ms-2 text-dark">${S_period}</span>
+            </h4>
+
+            <div class="row g-4">
+                <!-- Total Transactions -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-receipt fa-2x text-primary mb-2"></i>
+                            <h6 class="text-muted">Total Transactions</h6>
+                            <p class="fs-4 fw-bold text-dark">${S_totalTransactions}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Amount -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-coins fa-2x text-warning mb-2"></i>
+                            <h6 class="text-muted">Total Amount (LKR)</h6>
+                            <p class="fs-4 fw-bold text-dark">
+                                <fmt:formatNumber value="${S_totalTransactionAmount}" type="number" minFractionDigits="2" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Highest Transaction -->
+                <div class="col-md-3 ">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-arrow-up fa-2x text-danger mb-2"></i>
+                            <h6 class="text-muted">Highest Transaction</h6>
+                            <p class="fs-4 fw-bold text-dark">
+                                <fmt:formatNumber value="${S_highestTransaction}" type="number" minFractionDigits="2" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unique Customers -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-2x text-success mb-2"></i>
+                            <h6 class="text-muted">Unique Customers</h6>
+                            <p class="fs-4 fw-bold text-dark">${S_uniqueCustomers}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Deposits -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-piggy-bank fa-2x text-success mb-2"></i>
+                            <h6 class="text-muted">Deposits</h6>
+                            <p class="fs-4 fw-bold text-dark">${S_depositCount}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Withdrawals -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-money-bill-wave fa-2x text-danger mb-2"></i>
+                            <h6 class="text-muted">Withdrawals</h6>
+                            <p class="fs-4 fw-bold text-dark">${S_withdrawalCount}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reported Accounts -->
+                <div class="col-md-3">
+                    <div class="card border-0 shadow-sm bg-light">
+                        <div class="card-body text-center">
+                            <i class="fas fa-file-invoice fa-2x text-secondary mb-2"></i>
+                            <h6 class="text-muted">Reported Accounts</h6>
+                            <p class="fs-4 fw-bold text-dark">${S_reportAccounts}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
