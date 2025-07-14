@@ -6,7 +6,10 @@
        version="4.0">
 
     <interceptors>
-<!--        <class>lk.jiat.ee.interceptors.interceptor.WithdrawalValidatorInterceptor</class>-->
         <class>lk.jiat.ee.interceptor.WithdrawalValidatorInterceptor</class>
+<!--        <class>lk.jiat.ee.interceptor.DepositValidatorInterceptor</class>-->
+<!--        <class>lk.jiat.ee.interceptor.TransferValidatorInterceptor</class>-->
+<!--        <class>lk.jiat.ee.interceptor.LoanApprovalInterceptor</class>-->
+<!--        <class>lk.jiat.ee.interceptor.BalanceCheckInterceptor</class>-->
     </interceptors>
 </beans>

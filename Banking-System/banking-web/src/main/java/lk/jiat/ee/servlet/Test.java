@@ -1,5 +1,7 @@
 package lk.jiat.ee.servlet;
 
+import jakarta.annotation.security.DeclareRoles;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,6 +17,7 @@ import lk.jiat.ee.service.TransactionService;
 
 import java.io.IOException;
 import java.util.List;
+
 
 @WebServlet("/test")
 public class Test extends HttpServlet {

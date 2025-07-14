@@ -11,6 +11,7 @@ import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
 import lk.jiat.ee.exceptions.AccountNotFoundException;
+import lk.jiat.ee.exceptions.InvalidDepositAmountException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 
@@ -39,18 +40,28 @@ public class deposit extends HttpServlet {
         } catch (AccountNotFoundException e) {
             throw new RuntimeException(e);
         }
-        transactionService.deposit(accountNumber,Double.parseDouble(amount));
+        if(Long.parseLong(amount)<=0){
+            try {
+                throw new InvalidDepositAmountException(Long.parseLong(amount));
+            } catch (InvalidDepositAmountException e) {
+                throw new RuntimeException(e);
+            }
 
-        Transaction transaction = new Transaction();
-        transaction.setAmount(Double.parseDouble(amount));
-        transaction.setDescription(description);
-        transaction.setTimestamp(LocalDateTime.now());
-        transaction.setType(TransactionType.DEPOSIT);
-        transaction.setAccount(account);
+        }else{
 
-        transactionService.saveTransaction(transaction);
+            transactionService.deposit(accountNumber, Double.parseDouble(amount));
 
-        response.sendRedirect(request.getContextPath() + "/customer/transactions.jsp");
+            Transaction transaction = new Transaction();
+            transaction.setAmount(Double.parseDouble(amount));
+            transaction.setDescription(description);
+            transaction.setTimestamp(LocalDateTime.now());
+            transaction.setType(TransactionType.DEPOSIT);
+            transaction.setAccount(account);
+
+            transactionService.saveTransaction(transaction);
+
+            response.sendRedirect(request.getContextPath() + "/customer/viewTransaction.jsp");
+        }
 
 
     }

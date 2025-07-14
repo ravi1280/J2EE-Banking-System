@@ -12,6 +12,8 @@ import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.annotation.ValidateWithdrawal;
 import lk.jiat.ee.exceptions.AccountNotFoundException;
+import lk.jiat.ee.exceptions.InsufficientBalanceException;
+import lk.jiat.ee.exceptions.InvalidDepositAmountException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 

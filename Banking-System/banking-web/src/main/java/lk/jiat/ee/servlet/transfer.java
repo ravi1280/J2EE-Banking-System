@@ -10,6 +10,8 @@ import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
 import lk.jiat.ee.exceptions.AccountNotFoundException;
+import lk.jiat.ee.exceptions.InsufficientBalanceException;
+import lk.jiat.ee.exceptions.InvalidDepositAmountException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 
@@ -40,19 +42,41 @@ public class transfer extends HttpServlet {
             throw new RuntimeException(e);
         }
 
-        transactionService.transfer(from,to,Double.parseDouble(amount));
+        try {
+            Account  account2 = accountService.getAccountByNumber(to);
+        } catch (AccountNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
-        Transaction transaction = new Transaction();
-        transaction.setAmount(Double.parseDouble(amount));
-        transaction.setDescription(description);
-        transaction.setTimestamp(LocalDateTime.now());
-        transaction.setType(TransactionType.TRANSFER);
-        transaction.setAccount(account);
+        if(Long.parseLong(amount)<=0){
+            try {
+                throw new InvalidDepositAmountException(Long.parseLong(amount));
+            } catch (InvalidDepositAmountException e) {
+                throw new RuntimeException(e);
+            }
 
-        transactionService.saveTransaction(transaction);
+        }else if(account.getBalance()<Long.parseLong(amount)){
+            try {
+                throw new InsufficientBalanceException(account.getBalance(),Long.parseLong(amount));
+            } catch (InsufficientBalanceException e) {
+                throw new RuntimeException(e);
+            }
 
-        response.sendRedirect(request.getContextPath() + "/customer/transactions.jsp");
+        }else {
 
+            transactionService.transfer(from, to, Double.parseDouble(amount));
 
+            Transaction transaction = new Transaction();
+            transaction.setAmount(Double.parseDouble(amount));
+            transaction.setDescription(description);
+            transaction.setTimestamp(LocalDateTime.now());
+            transaction.setType(TransactionType.TRANSFER);
+            transaction.setAccount(account);
+
+            transactionService.saveTransaction(transaction);
+
+            response.sendRedirect(request.getContextPath() + "/customer/viewTransaction.jsp");
+
+        }
     }
 }

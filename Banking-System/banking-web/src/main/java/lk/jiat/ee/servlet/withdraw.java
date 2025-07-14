@@ -10,6 +10,8 @@ import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
 import lk.jiat.ee.exceptions.AccountNotFoundException;
+import lk.jiat.ee.exceptions.InsufficientBalanceException;
+import lk.jiat.ee.exceptions.InvalidDepositAmountException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 
@@ -39,6 +41,23 @@ public class withdraw extends HttpServlet {
             throw new RuntimeException(e);
         }
 
+        if(account.getBalance()<Long.parseLong(amount)){
+            try {
+                throw new InsufficientBalanceException(account.getBalance(),Long.parseLong(amount));
+            } catch (InsufficientBalanceException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+         if(Long.parseLong(amount)<=0){
+            try {
+                throw new InvalidDepositAmountException(Long.parseLong(amount));
+            } catch (InvalidDepositAmountException e) {
+                throw new RuntimeException(e);
+            }
+
+        } else {
+
         transactionService.withdraw(accountNumber,Double.parseDouble(amount));
 
         Transaction transaction = new Transaction();
@@ -50,7 +69,8 @@ public class withdraw extends HttpServlet {
 
         transactionService.saveTransaction(transaction);
 
-        response.sendRedirect(request.getContextPath() + "/customer/transactions.jsp");
+        response.sendRedirect(request.getContextPath() + "/customer/viewTransaction.jsp");
+        }
 
     }
 }
