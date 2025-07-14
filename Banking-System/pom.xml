@@ -15,7 +15,7 @@
         <module>banking-account</module>
         <module>banking-transaction</module>
         <module>banking-customer</module>
-        <module>banking-security</module>
+        <module>banking-interceptors</module>
         <module>banking-report</module>
         <module>banking-timers</module>
     </modules>

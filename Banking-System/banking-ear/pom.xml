@@ -57,7 +57,7 @@
 
         <dependency>
             <groupId>lk.jiat.ee</groupId>
-            <artifactId>banking-security</artifactId>
+            <artifactId>banking-interceptors</artifactId>
             <version>1.0</version>
             <type>ejb</type>
         </dependency>

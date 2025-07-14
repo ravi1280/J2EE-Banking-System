@@ -9,7 +9,7 @@
         <version>1.0</version>
     </parent>
 
-    <artifactId>banking-security</artifactId>
+    <artifactId>banking-interceptors</artifactId>
     <packaging>ejb</packaging>
     <name>Banking-System-Security</name>
 
