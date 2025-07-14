@@ -8,6 +8,7 @@ import jakarta.security.enterprise.identitystore.CredentialValidationResult;
 import jakarta.security.enterprise.identitystore.IdentityStore;
 import lk.jiat.ee.entity.Admin;
 import lk.jiat.ee.entity.Customer;
+import lk.jiat.ee.exceptions.CustomerNotFoundException;
 import lk.jiat.ee.service.AdminService;
 import lk.jiat.ee.service.CustomerService;
 
@@ -35,7 +36,12 @@ public class AppIdentityStore implements IdentityStore {
             System.out.println(email+" validate "+password   );
 
             if (customerService.exists(email, password)) {
-                Customer customer = customerService.getCustomerByEmail(email);
+                Customer customer = null;
+                try {
+                    customer = customerService.getCustomerByEmail(email);
+                } catch (CustomerNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 return new CredentialValidationResult(
                         customer.getEmail(),
                         Set.of("CUSTOMER") // Role

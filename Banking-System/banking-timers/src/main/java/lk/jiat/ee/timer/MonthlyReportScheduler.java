@@ -32,7 +32,6 @@ public class MonthlyReportScheduler {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void generateMonthlyReport() {
         try {
-            System.out.println("📄 Generating Monthly Report...");
 
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime startOfMonth = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -71,18 +70,6 @@ public class MonthlyReportScheduler {
 
             long accountCount = em.createQuery("SELECT COUNT(a) FROM Account a", Long.class).getSingleResult();
             String period ="Period: " + startOfLastMonth.toLocalDate() + " to " + endOfLastMonth.toLocalDate();
-
-
-            System.out.println("===== 📊 Monthly Admin Dashboard Data =====");
-            System.out.println(period);
-            System.out.println("Total Transactions: " + totalCount);
-            System.out.printf("Total Amount Transferred: LKR %.2f\n", totalAmount);
-            System.out.println("Active Customers: " + uniqueCustomers);
-            System.out.println("Total Accounts: " + accountCount);
-            System.out.println("Deposits: " + depositCount);
-            System.out.println("Withdrawals: " + withdrawalCount);
-            System.out.printf("Highest Transaction: LKR %.2f\n", maxTransaction);
-            System.out.println("===========================================");
 
             reportService.updateReport(period,totalCount, totalAmount, depositCount, withdrawalCount,
                     uniqueCustomers, accountCount, maxTransaction);

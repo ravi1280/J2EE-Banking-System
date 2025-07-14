@@ -1,23 +1,30 @@
 <%@ page import="javax.naming.InitialContext" %>
 <%@ page import="javax.naming.NamingException" %>
-<%@ page import="lk.jiat.ee.service.TransactionService" %>
-<%@ page import="lk.jiat.ee.entity.Transaction" %>
-<%@ page import="java.util.List" %>
+<%@ page import="lk.jiat.ee.service.CustomerService" %>
+<%@ page import="lk.jiat.ee.service.AccountService" %>
+<%@ page import="lk.jiat.ee.entity.Customer" %>
+<%@ page import="lk.jiat.ee.entity.Account" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-  String username = request.getUserPrincipal().getName();
-  System.out.println(username);
-//  try {
-//    InitialContext initialContext = new InitialContext();
-//    TransactionService transactionService = (TransactionService) initialContext.lookup("lk.jiat.ee.service.TransactionService");
-//    String idParam = request.getParameter("id");
-//    Long id = Long.parseLong(idParam); // convert string to Long
-//    List<Transaction> transactions = transactionService.getAllTransactionByAccountID(id);
-//    pageContext.setAttribute("transactions", transactions);
-//  } catch (NamingException e) {
-//    throw new RuntimeException(e);
-//  }
+  try {
+    InitialContext ic = new InitialContext();
+    CustomerService customerService = (CustomerService) ic.lookup("lk.jiat.ee.service.CustomerService");
+    AccountService accountService = (AccountService) ic.lookup("lk.jiat.ee.service.AccountService");
+
+    // Get current user by username
+    String username = request.getUserPrincipal().getName();
+    Customer currentUser = customerService.getCustomerByEmail(username);
+
+    if (currentUser != null) {
+      // Get user's accounts
+      Account userAccount = accountService.getAccountByID(currentUser.getId());
+      pageContext.setAttribute("currentUser", currentUser);
+      pageContext.setAttribute("userAccount", userAccount);
+    }
+  } catch (NamingException e) {
+    pageContext.setAttribute("error", "Service unavailable. Please try again later.");
+  }
 %>
 <!DOCTYPE html>
 <html lang="en">

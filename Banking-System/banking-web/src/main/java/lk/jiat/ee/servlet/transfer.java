@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
+import lk.jiat.ee.exceptions.AccountNotFoundException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 
@@ -32,7 +33,12 @@ public class transfer extends HttpServlet {
         String description = request.getParameter("description");
         System.out.println(from + " " + to + " " + amount);
 
-        Account account = accountService.getAccountByNumber(from);
+        Account account = null;
+        try {
+            account = accountService.getAccountByNumber(from);
+        } catch (AccountNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
         transactionService.transfer(from,to,Double.parseDouble(amount));
 

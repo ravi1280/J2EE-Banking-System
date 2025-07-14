@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
+import lk.jiat.ee.exceptions.AccountNotFoundException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.TransactionService;
 
@@ -32,7 +33,12 @@ public class deposit extends HttpServlet {
         String description = request.getParameter("description");
         System.out.println(accountNumber + " " + amount);
 
-        Account account = accountService.getAccountByNumber(accountNumber);
+        Account account = null;
+        try {
+            account = accountService.getAccountByNumber(accountNumber);
+        } catch (AccountNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         transactionService.deposit(accountNumber,Double.parseDouble(amount));
 
         Transaction transaction = new Transaction();

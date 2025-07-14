@@ -1,6 +1,8 @@
 package lk.jiat.ee.bean;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lk.jiat.ee.entity.Admin;
@@ -13,11 +15,13 @@ public class AdminSessionBean implements AdminService {
     @PersistenceContext
     private EntityManager em;
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Admin getAdminByID(String username, String password) {
         return null;
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Admin getAdminByEmail(String email) {
         Admin admin =  em.createNamedQuery("Admin.FindByEmail",Admin.class)
                 .setParameter("email", email)
@@ -26,6 +30,7 @@ public class AdminSessionBean implements AdminService {
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public boolean exists(String email, String password) {
         Admin admin = null;
         try {

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.ee.entity.Customer;
 import lk.jiat.ee.entity.ScheduledTransfer;
+import lk.jiat.ee.exceptions.CustomerNotFoundException;
 import lk.jiat.ee.service.CustomerService;
 import lk.jiat.ee.service.ScheduledTransferServissces;
 
@@ -24,7 +25,12 @@ public class scheduleTransfer extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getUserPrincipal().getName();
-        Customer customer = customerService.getCustomerByEmail(email);
+        Customer customer = null;
+        try {
+            customer = customerService.getCustomerByEmail(email);
+        } catch (CustomerNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println();
 
         String targetAccount = request.getParameter("targetAccount");

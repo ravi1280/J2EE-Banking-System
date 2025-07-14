@@ -1,6 +1,9 @@
 package lk.jiat.ee.bean;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lk.jiat.ee.entity.Account;
@@ -14,12 +17,16 @@ public class ScheduledTransferSessionBean implements ScheduledTransferServissces
     @PersistenceContext
     private EntityManager em;
 
+
+    @RolesAllowed({"CUSTOMER","ADMIN"})
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void save(ScheduledTransfer transfer) {
         em.persist(transfer);
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<ScheduledTransfer> getAllActiveTransfers() {
         List<ScheduledTransfer> scheduledTransfer = em.createNamedQuery("Schedule.FindAllActive", ScheduledTransfer.class)
                 .getResultList();
@@ -28,6 +35,7 @@ public class ScheduledTransferSessionBean implements ScheduledTransferServissces
     }
 
     @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateScheduledTransfer(ScheduledTransfer transfer) {
         em.merge(transfer);
     }

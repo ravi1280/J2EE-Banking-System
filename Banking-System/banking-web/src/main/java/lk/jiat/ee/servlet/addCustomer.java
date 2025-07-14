@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.ee.entity.Customer;
+import lk.jiat.ee.exceptions.DuplicateCustomerException;
 import lk.jiat.ee.service.CustomerService;
 import lk.jiat.ee.utils.Encyptions;
 
@@ -33,7 +34,11 @@ public class addCustomer extends HttpServlet {
         Customer customer = new Customer(fullName, email, encryptPassword, phone, address);
         customer.setVerificationCode(verificationCode);
 
-        customerService.createCustomer(customer);
+        try {
+            customerService.createCustomer(customer);
+        } catch (DuplicateCustomerException e) {
+            throw new RuntimeException(e);
+        }
         //roll back krnn customer add une nethnm
 
         response.sendRedirect(request.getContextPath()+"/admin/addCustomers.jsp");

@@ -29,7 +29,7 @@ public class MonthlyTransferScheduler {
 //@Schedule(minute = "*/5", hour = "*", persistent = false)
 
 public void executeMonthlyTransfers() {
-        System.out.println("✅ Running monthly fund transfers");
+
 
         List<ScheduledTransfer> transfers = scheduledTransferServices.getAllActiveTransfers();
 
@@ -50,12 +50,11 @@ public void executeMonthlyTransfers() {
 
                 transactionService.saveTransaction(transaction);
 
-                st.setActive(false); // Assuming you have a boolean field 'active'
+                st.setActive(false);
                 scheduledTransferServices.updateScheduledTransfer(st);
 
-                System.out.println("💸 Transfer completed for customer: " + st.getCustomer().getEmail());
             } catch (Exception e) {
-                System.err.println("❌ Transfer failed: " + e.getMessage());
+                throw new RuntimeException("Transfer failed: " + e.getMessage());
             }
         }
     }
