@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lk.jiat.ee.entity.Customer;
 import lk.jiat.ee.exceptions.DuplicateCustomerException;
+import lk.jiat.ee.mail.VerificationMail;
+import lk.jiat.ee.provider.MailServiceProvider;
 import lk.jiat.ee.service.CustomerService;
 import lk.jiat.ee.utils.Encyptions;
 
@@ -44,7 +46,10 @@ public class addCustomer extends HttpServlet {
         } catch (DuplicateCustomerException e) {
             throw new RuntimeException(e);
         }
-        //roll back krnn customer add une nethnm
+
+
+        VerificationMail mail = new VerificationMail(email , password);
+        MailServiceProvider.getInstance().sendMail(mail);
 
         response.sendRedirect(request.getContextPath()+"/admin/addCustomers.jsp");
 
