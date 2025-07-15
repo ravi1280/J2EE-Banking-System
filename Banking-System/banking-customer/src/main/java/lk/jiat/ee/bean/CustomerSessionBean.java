@@ -7,6 +7,7 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import lk.jiat.ee.bean.annotation.CustomerValid;
 import lk.jiat.ee.entity.Customer;
 import lk.jiat.ee.exceptions.CustomerNotFoundException;
 import lk.jiat.ee.exceptions.DuplicateCustomerException;
@@ -14,6 +15,8 @@ import lk.jiat.ee.service.CustomerService;
 
 import java.util.List;
 
+
+@CustomerValid
 @Stateless
 public class CustomerSessionBean implements CustomerService {
     @PersistenceContext
@@ -60,6 +63,8 @@ public class CustomerSessionBean implements CustomerService {
            return false;
         }
     }
+
+
     @RolesAllowed({"ADMIN"})
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)

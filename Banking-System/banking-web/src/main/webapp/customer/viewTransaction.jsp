@@ -8,6 +8,8 @@
 <%@ page import="lk.jiat.ee.service.CustomerService" %>
 <%@ page import="lk.jiat.ee.entity.Account" %>
 <%@ page import="lk.jiat.ee.service.AccountService" %>
+<%@ page import="lk.jiat.ee.exceptions.AccountNotFoundException" %>
+<%@ page import="lk.jiat.ee.exceptions.CustomerNotFoundException" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -18,12 +20,24 @@
     InitialContext ctx = new InitialContext();
     CustomerService customerService = (CustomerService) ctx.lookup("lk.jiat.ee.service.CustomerService");
     AccountService accountService = (AccountService) ctx.lookup("lk.jiat.ee.service.AccountService");
-    Customer currentUser = customerService.getCustomerByEmail(username);
+      Customer currentUser = null;
+      try {
+          currentUser = customerService.getCustomerByEmail(username);
+      } catch (CustomerNotFoundException e) {
+          throw new RuntimeException(e);
+      }
 
-    if (currentUser != null) {
-      Account userAccount = accountService.getAccountByID(currentUser.getId());
-      pageContext.setAttribute("currentUser", currentUser);
+      if (currentUser != null) {
+        Account userAccount = null;
+        try {
+            userAccount = accountService.getAccountByCustomerID(currentUser.getId());
+        } catch (AccountNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        pageContext.setAttribute("currentUser", currentUser);
       pageContext.setAttribute("userAccount", userAccount);
+
+
 
       TransactionService transactionService = (TransactionService) ctx.lookup("lk.jiat.ee.service.TransactionService");
       List<Transaction> transactions = transactionService.getAllTransactionByAccountID(userAccount.getId());
@@ -50,11 +64,11 @@
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
       background-color: #f4f7fa;
       padding: 40px 0;
     }
@@ -94,7 +108,7 @@
 <body>
 
 <div class="container">
-  <h2 class="text-primary mb-4"><i class="fas fa-list-alt me-2"></i>Transaction Dashboard</h2>
+  <h2 class="text-primary mb-4">Transaction Dashboard</h2>
 
   <!-- Summary Cards -->
   <div class="row mb-4">

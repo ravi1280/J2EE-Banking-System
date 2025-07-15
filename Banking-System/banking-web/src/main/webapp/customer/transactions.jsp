@@ -4,28 +4,40 @@
 <%@ page import="lk.jiat.ee.service.AccountService" %>
 <%@ page import="lk.jiat.ee.entity.Customer" %>
 <%@ page import="lk.jiat.ee.entity.Account" %>
+<%@ page import="lk.jiat.ee.exceptions.AccountNotFoundException" %>
+<%@ page import="lk.jiat.ee.exceptions.CustomerNotFoundException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%
-  try {
-    InitialContext ic = new InitialContext();
-    CustomerService customerService = (CustomerService) ic.lookup("lk.jiat.ee.service.CustomerService");
-    AccountService accountService = (AccountService) ic.lookup("lk.jiat.ee.service.AccountService");
+<%--<%--%>
+<%--  try {--%>
+<%--    InitialContext ic = new InitialContext();--%>
+<%--    CustomerService customerService = (CustomerService) ic.lookup("lk.jiat.ee.service.CustomerService");--%>
+<%--    AccountService accountService = (AccountService) ic.lookup("lk.jiat.ee.service.AccountService");--%>
 
-    // Get current user by username
-    String username = request.getUserPrincipal().getName();
-    Customer currentUser = customerService.getCustomerByEmail(username);
+<%--    // Get current user by username--%>
+<%--    String username = request.getUserPrincipal().getName();--%>
+<%--      Customer currentUser = null;--%>
+<%--      try {--%>
+<%--          currentUser = customerService.getCustomerByEmail(username);--%>
+<%--      } catch (CustomerNotFoundException e) {--%>
+<%--            throw new RuntimeException(e);--%>
+<%--      }--%>
 
-    if (currentUser != null) {
-      // Get user's accounts
-      Account userAccount = accountService.getAccountByID(currentUser.getId());
-      pageContext.setAttribute("currentUser", currentUser);
-      pageContext.setAttribute("userAccount", userAccount);
-    }
-  } catch (NamingException e) {
-    pageContext.setAttribute("error", "Service unavailable. Please try again later.");
-  }
-%>
+<%--      if (currentUser != null) {--%>
+<%--      // Get user's accounts--%>
+<%--        Account userAccount = null;--%>
+<%--        try {--%>
+<%--            userAccount = accountService.getAccountByCustomerID(currentUser.getId());--%>
+<%--        } catch (AccountNotFoundException e) {--%>
+<%--            throw new RuntimeException(e);--%>
+<%--        }--%>
+<%--        pageContext.setAttribute("currentUser", currentUser);--%>
+<%--      pageContext.setAttribute("userAccount", userAccount);--%>
+<%--    }--%>
+<%--  } catch (NamingException e) {--%>
+<%--    pageContext.setAttribute("error", "Service unavailable. Please try again later.");--%>
+<%--  }--%>
+<%--%>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,11 +48,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       background-color: #f8f9fa;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
       padding: 40px 0;
       color: #212529;
     }
@@ -117,7 +131,7 @@
 <div class="container">
   <!-- Customer List -->
 
-  <h2 class="text-center section-title "><i class="fas fa-coins me-2 text-primary"></i>Customer Transactions</h2>
+  <h2 class="text-primary mb-4 ">Customer Transactions</h2>
 
   <div class="row g-4">
 

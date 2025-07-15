@@ -8,16 +8,24 @@
         <web-resource-collection>
             <web-resource-name>Customer Area</web-resource-name>
             <url-pattern>/customer/*</url-pattern>
+            <url-pattern>/withdraw</url-pattern>
+            <url-pattern>/transfer</url-pattern>
+            <url-pattern>/scheduleTransfer</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>CUSTOMER</role-name>
         </auth-constraint>
     </security-constraint>
 
+
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Admin Area</web-resource-name>
             <url-pattern>/admin/*</url-pattern>
+            <url-pattern>/addAccount</url-pattern>
+            <url-pattern>/addCustomer</url-pattern>
+            <url-pattern>/updateAccount</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMIN</role-name>

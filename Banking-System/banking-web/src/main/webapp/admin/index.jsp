@@ -78,8 +78,8 @@
 
     <!-- Quick Actions -->
     <div class="mb-4 d-flex gap-3">
-<%--        <a href="${pageContext.request.contextPath}/admin/addCustomers.jsp" class="btn btn-primary">Add Customer</a>--%>
         <a href="${pageContext.request.contextPath}/admin/addCustomers.jsp" class="btn btn-outline-primary">Add Customer</a>
+        <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-danger">Log Out</a>
     </div>
 
     <!-- Dashboard Cards -->

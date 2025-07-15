@@ -4,6 +4,8 @@ import jakarta.annotation.security.DeclareRoles;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +20,7 @@ import lk.jiat.ee.service.TransactionService;
 import java.io.IOException;
 import java.util.List;
 
-
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"ADMIN"}))
 @WebServlet("/test")
 public class Test extends HttpServlet {
 

@@ -5,126 +5,182 @@
 <%@ page import="lk.jiat.ee.service.CustomerService" %>
 <%@ page import="lk.jiat.ee.entity.Customer" %>
 <%@ page import="java.util.List" %>
+<%@ page import="lk.jiat.ee.exceptions.CustomerNotFoundException" %>
+<%@ page import="lk.jiat.ee.exceptions.AccountNotFoundException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<%--<%--%>
-<%--    String accountId = request.getParameter("aid");--%>
-<%--      try {--%>
-<%--          InitialContext initialContext = new InitialContext();--%>
-<%--          AccountService accountService = (AccountService) initialContext.lookup("lk.jiat.ee.service.AccountService");--%>
-<%--          Account account = accountService.getAccountByID(Long.parseLong(accountId));--%>
-<%--          pageContext.setAttribute("account", account);--%>
-<%--          System.out.println(account.getAccountNumber());--%>
-<%--  } catch (NamingException e) {--%>
-<%--    throw new RuntimeException(e);--%>
-<%--  }--%>
-<%--%>--%>
 
-<%
-    try {
-        InitialContext ic = new InitialContext();
-        CustomerService customerService = (CustomerService) ic.lookup("lk.jiat.ee.service.CustomerService");
-        AccountService accountService = (AccountService) ic.lookup("lk.jiat.ee.service.AccountService");
-
-        // Get current user by username
-        String username = request.getUserPrincipal().getName();
-        Customer currentUser = customerService.getCustomerByEmail(username);
-
-        if (currentUser != null) {
-            // Get user's accounts
-            Account userAccount = accountService.getAccountByID(currentUser.getId());
-            pageContext.setAttribute("currentUser", currentUser);
-            pageContext.setAttribute("userAccount", userAccount);
-        }
-    } catch (NamingException e) {
-        pageContext.setAttribute("error", "Service unavailable. Please try again later.");
-    }
-%>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Customer Dashboard</title>
-    <!-- Bootstrap CDN -->
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f7fa;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f2f5;
         }
-        .card-title {
-            color: #0d6efd;
+
+        .sidebar {
+            height: 100vh;
+            background-color: #0d6efd;
+            color: white;
+            padding: 20px;
+        }
+
+        .sidebar h4 {
+            color: #fff;
+        }
+
+        .sidebar a {
+            color: #cfd8dc;
+            display: block;
+            padding: 10px 0;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+        }
+
+        .dashboard {
+            padding: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .card .bi {
+            font-size: 1.8rem;
+        }
+
+        .btn-custom {
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                height: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 sidebar">
+            <h4>Secure Bank</h4>
+            <a href="#"><i class="bi bi-house-door me-2"></i> Dashboard</a>
+            <a href="${pageContext.request.contextPath}/customer/transactions.jsp"><i class="bi bi-arrow-left-right me-2"></i> Transfer Funds</a>
+            <a href="${pageContext.request.contextPath}/customer/viewTransaction.jsp"><i class="bi bi-eye me-2"></i> View Transactions</a>
+            <a href="${pageContext.request.contextPath}/customer/scheduleTransfer.jsp"><i class="bi bi-clock-history me-2"></i> Schedule Transfer</a>
+            <a href="${pageContext.request.contextPath}/logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+        </div>
 
-    <!-- Welcome Section -->
-    <div class="card mb-4 shadow">
-        <div class="card-body">
-            <h3 class="card-title">Welcome, ${pageContext.request.userPrincipal.name}</h3>
-            <p class="card-text">This is your personal dashboard. Use the buttons below to manage your banking activities.</p>
+        <!-- Dashboard -->
+        <div class="col-md-10 dashboard">
+            <h3 class="mb-4">Welcome, ${sessionCustomer.fullName}</h3>
+
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card p-3 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-credit-card text-primary me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Account Number</h6>
+                                <p class="mb-0">${sessionAccount.accountNumber}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-wallet2 text-info me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Account Type</h6>
+                                <p class="mb-0">${sessionAccount.accountType.name()}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-cash-stack text-success me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Balance</h6>
+                                <p class="mb-0 text-success fw-bold">
+                                    <fmt:formatNumber value="${sessionAccount.balance}" type="number" minFractionDigits="2"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 bg-light">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-percent text-warning me-3"></i>
+                            <div>
+                                <h6 class="mb-0">Interest Rate</h6>
+                                <p class="mb-0">${sessionAccount.interestRate}%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card p-4 mb-4">
+                <h5 class="mb-3">Latest Updates</h5>
+
+                <!-- Notifications -->
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item">🔔 Your last transaction of LKR 5,000 was successful.</li>
+                    <li class="list-group-item">🔒 A scheduled transfer is set for July 30th.</li>
+                </ul>
+
+
+                <!-- Tips -->
+                <div class="alert alert-info">
+                    💡 <strong>Tip:</strong> Use strong, unique passwords and change them periodically for better account protection.
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card p-4">
+                <h5 class="mb-3">Quick Actions</h5>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="${pageContext.request.contextPath}/customer/transactions.jsp" class="btn btn-outline-primary btn-custom">
+                        <i class="bi bi-arrow-left-right me-2"></i>Transfer Funds
+                    </a>
+                    <a href="${pageContext.request.contextPath}/customer/viewTransaction.jsp" class="btn btn-outline-secondary btn-custom">
+                        <i class="bi bi-eye me-2"></i>View Transactions
+                    </a>
+                    <a href="${pageContext.request.contextPath}/customer/scheduleTransfer.jsp" class="btn btn-outline-dark btn-custom">
+                        <i class="bi bi-clock-history me-2"></i>Schedule Transfer
+                    </a>
+
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Account Summary (placeholder values or JSTL loop) -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Account Number</h5>
-                    <p class="fs-4 text-primary">${userAccount.accountNumber}</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Account Type</h5>
-                    <p class="fs-4">${userAccount.accountType.name()}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Total Balance</h5>
-<%--                    <p class="fs-4 text-success">${userAccount.balance}</p>--%>
-                    <p class="fs-4 text-success"><fmt:formatNumber value="${userAccount.balance}" type="number" minFractionDigits="2" /></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Interest Rate</h5>
-                    <p class="fs-4 text-primary">${userAccount.interestRate}%</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Quick Action Buttons -->
-    <div class="card shadow mb-5">
-        <div class="card-body">
-            <h5 class="card-title">Quick Actions</h5>
-            <div class="d-flex flex-wrap gap-3 mt-3">
-                <a href="${pageContext.request.contextPath}/customer/transactions.jsp" class="btn btn-outline-success">Transfer Funds</a>
-                <a href="${pageContext.request.contextPath}/customer/viewTransaction.jsp" class="btn btn-outline-warning">View Transactions</a>
-                <a href="${pageContext.request.contextPath}/customer/profile.jsp" class="btn btn-outline-secondary">Edit Profile</a>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 </body>

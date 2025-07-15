@@ -10,10 +10,11 @@
   <meta charset="UTF-8">
   <title>Schedule Monthly Fund Transfer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #f4f7fa;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Poppins', sans-serif;
       padding: 40px 0;
     }
 

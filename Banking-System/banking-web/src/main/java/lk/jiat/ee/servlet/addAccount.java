@@ -2,6 +2,8 @@ package lk.jiat.ee.servlet;
 
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +15,8 @@ import lk.jiat.ee.service.CustomerService;
 
 import java.io.IOException;
 
+
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"ADMIN"}))
 @WebServlet("/addAccount")
 public class addAccount extends HttpServlet {
 
