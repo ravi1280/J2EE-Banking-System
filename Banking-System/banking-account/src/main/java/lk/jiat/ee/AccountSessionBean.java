@@ -49,6 +49,17 @@ public class AccountSessionBean implements AccountService {
     }
 
     @Override
+    public Account getAccountByCustomerID(Long id) throws AccountNotFoundException {
+        try {
+            return em.createNamedQuery("Account.FindByCustomerID", Account.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            throw new AccountNotFoundException(id);
+        }
+    }
+
+    @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Account getAccountByNumber(String number) throws AccountNotFoundException {
         try {
