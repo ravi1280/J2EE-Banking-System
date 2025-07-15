@@ -10,6 +10,7 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Account.FindByID", query = "select a from Account a where a.id=:id"),
+        @NamedQuery(name = "Account.FindByCustomerID", query = "select a from Account a where a.customer.id=:id"),
         @NamedQuery(name = "Account.FindAll" ,query = "select a from Account a"),
         @NamedQuery(name = "Account.FindByAccountNo", query = "SELECT a FROM Account a WHERE a.accountNumber=:accountNumber")
 })

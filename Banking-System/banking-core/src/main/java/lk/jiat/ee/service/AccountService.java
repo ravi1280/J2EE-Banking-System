@@ -13,9 +13,11 @@ public interface AccountService {
     void saveAccount(Account account);
     List<Account> getAllAccounts();
     Account getAccountByID(Long id) throws AccountNotFoundException;
+    Account getAccountByCustomerID(Long id) throws AccountNotFoundException;
     Account getAccountByNumber(String number) throws AccountNotFoundException;
     void updateAccount(Account account);
     boolean isExists(String accountId);
+
 
 
 
