@@ -2,6 +2,8 @@ package lk.jiat.ee.servlet;
 
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +16,7 @@ import lk.jiat.ee.service.ScheduledTransferServissces;
 
 import java.io.IOException;
 
-
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"CUSTOMER"}))
 @WebServlet("/scheduleTransfer")
 public class scheduleTransfer extends HttpServlet {
     @EJB
@@ -31,6 +33,7 @@ public class scheduleTransfer extends HttpServlet {
         } catch (CustomerNotFoundException e) {
             throw new RuntimeException(e);
         }
+
         System.out.println();
 
         String targetAccount = request.getParameter("targetAccount");

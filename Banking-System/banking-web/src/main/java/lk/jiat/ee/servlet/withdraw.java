@@ -2,6 +2,8 @@ package lk.jiat.ee.servlet;
 
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +21,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"CUSTOMER"}))
 @WebServlet("/withdraw")
 public class withdraw extends HttpServlet {
     @EJB
