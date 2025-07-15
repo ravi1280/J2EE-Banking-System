@@ -2,6 +2,8 @@ package lk.jiat.ee.servlet;
 
 import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HttpConstraint;
+import jakarta.servlet.annotation.ServletSecurity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +17,13 @@ import lk.jiat.ee.utils.Encyptions;
 import java.io.IOException;
 import java.util.UUID;
 
+@ServletSecurity(@HttpConstraint(rolesAllowed = {"ADMIN"}))
 @WebServlet("/addCustomer")
 public class addCustomer extends HttpServlet {
 
     @EJB
     private CustomerService customerService;
+
 
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,6 +37,7 @@ public class addCustomer extends HttpServlet {
         String verificationCode = UUID.randomUUID().toString();
         Customer customer = new Customer(fullName, email, encryptPassword, phone, address);
         customer.setVerificationCode(verificationCode);
+
 
         try {
             customerService.createCustomer(customer);
