@@ -8,41 +8,11 @@
 <%@ page import="lk.jiat.ee.exceptions.CustomerNotFoundException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--<%--%>
-<%--  try {--%>
-<%--    InitialContext ic = new InitialContext();--%>
-<%--    CustomerService customerService = (CustomerService) ic.lookup("lk.jiat.ee.service.CustomerService");--%>
-<%--    AccountService accountService = (AccountService) ic.lookup("lk.jiat.ee.service.AccountService");--%>
-
-<%--    // Get current user by username--%>
-<%--    String username = request.getUserPrincipal().getName();--%>
-<%--      Customer currentUser = null;--%>
-<%--      try {--%>
-<%--          currentUser = customerService.getCustomerByEmail(username);--%>
-<%--      } catch (CustomerNotFoundException e) {--%>
-<%--            throw new RuntimeException(e);--%>
-<%--      }--%>
-
-<%--      if (currentUser != null) {--%>
-<%--      // Get user's accounts--%>
-<%--        Account userAccount = null;--%>
-<%--        try {--%>
-<%--            userAccount = accountService.getAccountByCustomerID(currentUser.getId());--%>
-<%--        } catch (AccountNotFoundException e) {--%>
-<%--            throw new RuntimeException(e);--%>
-<%--        }--%>
-<%--        pageContext.setAttribute("currentUser", currentUser);--%>
-<%--      pageContext.setAttribute("userAccount", userAccount);--%>
-<%--    }--%>
-<%--  } catch (NamingException e) {--%>
-<%--    pageContext.setAttribute("error", "Service unavailable. Please try again later.");--%>
-<%--  }--%>
-<%--%>--%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Transactions</title>
+  <title>Customer | Transactions</title>
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
