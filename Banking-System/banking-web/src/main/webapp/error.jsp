@@ -64,7 +64,7 @@
     %>
   </div>
 
-  <a href="index.jsp" class="back-link">⬅ Back to Home</a>
+  <a href="${pageContext.request.contextPath}/index.jsp" class="back-link">⬅ Back to Home</a>
 </div>
 </body>
 </html>

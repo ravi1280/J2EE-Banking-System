@@ -73,7 +73,7 @@
     <p>🚫 You are not authorized to access this page.<br>
         Please log in with the proper account or contact your administrator.</p>
 
-    <a href="index.jsp" class="back-btn">🔐 Login</a>
+    <a href="${pageContext.request.contextPath}/index.jsp" class="back-btn">🔐 Login</a>
 </div>
 </body>
 </html>
