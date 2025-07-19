@@ -21,7 +21,6 @@ public class CustomerValidInterceptor {
                 if (customer.getEmail() == null || customer.getEmail().isEmpty()) {
                     throw new IllegalArgumentException("Email is required");
                 }
-                // Other validations here
                 System.out.println("✅ Interceptor: Customer is valid");
             }
         }
