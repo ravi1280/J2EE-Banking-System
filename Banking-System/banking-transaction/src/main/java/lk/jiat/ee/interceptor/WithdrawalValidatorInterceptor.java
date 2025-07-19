@@ -17,6 +17,7 @@ public class WithdrawalValidatorInterceptor {
     private AccountService accountService;
 
     @AroundInvoke
+
     public Object validateBalance(InvocationContext context) throws Exception {
         Object[] params = context.getParameters();
 
