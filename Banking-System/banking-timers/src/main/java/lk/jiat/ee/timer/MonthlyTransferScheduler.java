@@ -25,14 +25,10 @@ public class MonthlyTransferScheduler {
     @EJB
     private AccountService accountService;
 
-    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = false)
-//@Schedule(minute = "*/5", hour = "*", persistent = false)
-
-public void executeMonthlyTransfers() {
-
+    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = true)
+    public void executeMonthlyTransfers() {
 
         List<ScheduledTransfer> transfers = scheduledTransferServices.getAllActiveTransfers();
-
         for (ScheduledTransfer st : transfers) {
             try {
                 System.out.println(st.getCustomer().getFullName());
@@ -58,4 +54,7 @@ public void executeMonthlyTransfers() {
             }
         }
     }
+
+
+
 }
