@@ -28,11 +28,9 @@ public class MonthlyTransactionSave {
     @EJB
     private AccountService accountService;
 
-    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = false)
-//        @Schedule(minute = "*/2", hour = "*", persistent = false)
+    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = true)
     public void generateMonthlyReports() {
             System.out.println("Monthly reports generated");
-
         List<Customer> customers = customerService.getAllCustomers();
             List<Account>  accounts = accountService.getAllAccounts();
 
@@ -46,7 +44,9 @@ public class MonthlyTransactionSave {
                     account.getId();
 
             List<Transaction> transactions = em.createQuery(
-                            "SELECT t FROM Transaction t WHERE t.account.id = :accountId AND t.timestamp BETWEEN :start AND :end",
+                            "SELECT t FROM Transaction t WHERE" +
+                                    " t.account.id = :accountId AND" +
+                                    " t.timestamp BETWEEN :start AND :end",
                             Transaction.class)
                     .setParameter("accountId",  account.getId())
                     .setParameter("start", startOfLastMonth)
@@ -54,10 +54,16 @@ public class MonthlyTransactionSave {
                     .getResultList();
             try {
 
-                new TransactionPdfGenerator().generateCustomerTransactionsPdf(account.getCustomer().getFullName(),account.getAccountNumber(), transactions);
+                new TransactionPdfGenerator()
+                        .generateCustomerTransactionsPdf(
+                                account.getCustomer().getFullName(),
+                                account.getAccountNumber(),
+                                transactions);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
+
+
 }
