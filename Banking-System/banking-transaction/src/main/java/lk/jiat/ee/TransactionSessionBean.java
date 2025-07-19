@@ -27,7 +27,7 @@ public class TransactionSessionBean implements TransactionService {
     @EJB
     private AccountService accountService;
 
-//    @ValidateWithdrawal
+    @ValidateWithdrawal
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void withdraw(String AccountNumber, double amount) {
@@ -45,7 +45,7 @@ public class TransactionSessionBean implements TransactionService {
 
     }
 
-//    @ValidDeposit
+    @ValidDeposit
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void deposit(String AccountNumber, double amount) {
