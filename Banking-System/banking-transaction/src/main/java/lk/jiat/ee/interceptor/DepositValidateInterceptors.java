@@ -31,10 +31,11 @@ public class DepositValidateInterceptors {
             throw new AccountNotFoundException(Long.parseLong(accountId));
         }
 
-        if ( amount ==0) {
+        if ( amount == 0) {
             throw new InvalidDepositAmountException(amount);
         }
         return context.proceed();
 
     }
 }
+
