@@ -1,5 +1,6 @@
 package lk.jiat.ee.bean;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -16,12 +17,13 @@ import lk.jiat.ee.service.CustomerService;
 import java.util.List;
 
 
-@CustomerValid
+//@CustomerValid
 @Stateless
 public class CustomerSessionBean implements CustomerService {
     @PersistenceContext
     private EntityManager em;
 
+    @PermitAll
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public Customer getCustomerByID(Long id) throws CustomerNotFoundException {
@@ -32,7 +34,17 @@ public class CustomerSessionBean implements CustomerService {
         } catch (NoResultException e) {
             throw new CustomerNotFoundException("" + id);
         }
+    }
 
+    @RolesAllowed({"ADMIN"})
+    @Override
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void createCustomer(Customer customer) throws DuplicateCustomerException {
+        boolean exists = exists(customer.getEmail(), customer.getPassword());
+        if (exists) {
+            throw new DuplicateCustomerException(customer.getEmail());
+        }
+        em.persist(customer);
     }
 
     @Override
@@ -46,6 +58,7 @@ public class CustomerSessionBean implements CustomerService {
             throw new CustomerNotFoundException("Email: " + email);
         }
     }
+
 
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -65,18 +78,8 @@ public class CustomerSessionBean implements CustomerService {
     }
 
 
-    @RolesAllowed({"ADMIN"})
-    @Override
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void createCustomer(Customer customer) throws DuplicateCustomerException {
-        boolean exists = exists(customer.getEmail(), customer.getPassword());
-        if (exists) {
-            throw new DuplicateCustomerException(customer.getEmail());
-        }
-        em.persist(customer);
-    }
 
-
+    @PermitAll
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<Customer> getAllCustomers() {
@@ -84,7 +87,7 @@ public class CustomerSessionBean implements CustomerService {
                 .getResultList();
         return customers;
     }
-
+    @RolesAllowed({"ADMIN","CUSTOMER"})
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateCustomer(Customer customer) {
