@@ -26,10 +26,7 @@ public class MonthlyReportScheduler {
         generateMonthlyReport();
     }
 
-    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = false)
-
-//    @Schedule(minute = "*/5", hour = "*", persistent = false)
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = true)
     public void generateMonthlyReport() {
         try {
 
