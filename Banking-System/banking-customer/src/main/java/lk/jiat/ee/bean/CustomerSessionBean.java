@@ -5,9 +5,12 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
 import jakarta.ejb.TransactionAttributeType;
+import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.Id;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.security.enterprise.SecurityContext;
 import lk.jiat.ee.bean.annotation.CustomerValid;
 import lk.jiat.ee.entity.Customer;
 import lk.jiat.ee.exceptions.CustomerNotFoundException;
@@ -22,6 +25,9 @@ import java.util.List;
 public class CustomerSessionBean implements CustomerService {
     @PersistenceContext
     private EntityManager em;
+
+    @Inject
+    private SecurityContext securityContext;
 
     @PermitAll
     @Override
@@ -40,6 +46,7 @@ public class CustomerSessionBean implements CustomerService {
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void createCustomer(Customer customer) throws DuplicateCustomerException {
+      
         boolean exists = exists(customer.getEmail(), customer.getPassword());
         if (exists) {
             throw new DuplicateCustomerException(customer.getEmail());
