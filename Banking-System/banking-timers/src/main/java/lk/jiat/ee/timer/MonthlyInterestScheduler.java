@@ -14,6 +14,9 @@ import java.util.List;
         private AccountService accountService;
 
         @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = true)
+
+//        @Schedule(minute = "*/1", hour = "*", persistent = true)
+
         @TransactionAttribute(TransactionAttributeType.REQUIRED)
         public void updateMonthlyInterest() throws BankingSystemsException {
             List<Account> accounts  = accountService.getAllAccounts();
@@ -28,6 +31,7 @@ import java.util.List;
                 }
 
             }
+
             System.out.println(" Monthly Interest Update Completed.");
         }
 
