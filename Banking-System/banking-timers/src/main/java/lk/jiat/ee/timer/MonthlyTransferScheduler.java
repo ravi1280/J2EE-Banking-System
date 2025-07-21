@@ -7,6 +7,7 @@ import lk.jiat.ee.entity.Account;
 import lk.jiat.ee.entity.ScheduledTransfer;
 import lk.jiat.ee.entity.Transaction;
 import lk.jiat.ee.enums.TransactionType;
+import lk.jiat.ee.exceptions.BankingSystemsException;
 import lk.jiat.ee.service.AccountService;
 import lk.jiat.ee.service.ScheduledTransferServissces;
 import lk.jiat.ee.service.TransactionService;
@@ -26,7 +27,7 @@ public class MonthlyTransferScheduler {
     private AccountService accountService;
 
     @Schedule(dayOfMonth = "Last", hour = "23", minute = "59", persistent = true)
-    public void executeMonthlyTransfers() {
+    public void executeMonthlyTransfers() throws BankingSystemsException {
 
         List<ScheduledTransfer> transfers = scheduledTransferServices.getAllActiveTransfers();
         for (ScheduledTransfer st : transfers) {
@@ -50,7 +51,7 @@ public class MonthlyTransferScheduler {
                 scheduledTransferServices.updateScheduledTransfer(st);
 
             } catch (Exception e) {
-                throw new RuntimeException("Transfer failed: " + e.getMessage());
+                throw new BankingSystemsException("Transfer failed: " + e.getMessage());
             }
         }
     }
