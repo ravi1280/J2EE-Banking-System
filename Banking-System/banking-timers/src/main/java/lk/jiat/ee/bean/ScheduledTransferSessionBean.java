@@ -1,5 +1,6 @@
 package lk.jiat.ee.bean;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.ejb.Stateless;
 import jakarta.ejb.TransactionAttribute;
@@ -25,6 +26,7 @@ public class ScheduledTransferSessionBean implements ScheduledTransferServissces
         em.persist(transfer);
     }
 
+    @PermitAll
     @Override
     @TransactionAttribute(TransactionAttributeType.SUPPORTS)
     public List<ScheduledTransfer> getAllActiveTransfers() {
@@ -34,6 +36,7 @@ public class ScheduledTransferSessionBean implements ScheduledTransferServissces
 
     }
 
+    @PermitAll
     @Override
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void updateScheduledTransfer(ScheduledTransfer transfer) {
